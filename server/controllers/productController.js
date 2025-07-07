@@ -1,6 +1,4 @@
-const Product = require("../models/productModel");
-
-// Create product
+const Product = require("../models/productModels");
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, category, image } = req.body;
@@ -17,8 +15,6 @@ exports.createProduct = async (req, res) => {
     res.status(500).json({ msg: "Error creating product", error: err.message });
   }
 };
-
-// Get all products
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -27,8 +23,6 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ msg: "Error fetching products" });
   }
 };
-
-// Get single product
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);

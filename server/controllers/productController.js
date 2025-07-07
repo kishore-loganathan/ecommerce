@@ -1,5 +1,6 @@
-const Product = require("../models/productModels");
-exports.createProduct = async (req, res) => {
+const Product = require("../models/Product");
+
+const createProduct = async (req, res) => {
   try {
     const { name, description, price, category, image } = req.body;
 
@@ -7,27 +8,31 @@ exports.createProduct = async (req, res) => {
       return res.status(400).json({ msg: "All fields are required" });
     }
 
-    const product = new Product({ name, description, price, category, image });
-    await product.save();
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      image,
+    });
 
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(500).json({ msg: "Error creating product", error: err.message });
+    res.status(201).json({ msg: "Product created", product });
+  } catch (error) {
+    console.error("Product creation error:", error);
+    res.status(500).json({ msg: "Server Error" });
   }
 };
-exports.getProducts = async (req, res) => {
+
+const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find();
     res.json(products);
-  } catch (err) {
-    res.status(500).json({ msg: "Error fetching products" });
+  } catch (error) {
+    res.status(500).json({ msg: "Failed to fetch products" });
   }
 };
-exports.getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ msg: "Product not found" });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ msg: "Error fetching product" });}
+
+module.exports = {
+  createProduct,
+  getAllProducts,
 };

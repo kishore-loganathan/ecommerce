@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String, // image URL or filename
+      type: String,
       required: true,
     },
   },

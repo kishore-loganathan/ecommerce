@@ -18,6 +18,7 @@ router.post("/", protect, async (req, res) => {
     });
 
     res.status(201).json({ msg: "Order placed", order });
+    console.log(order);
   } catch (err) {
     console.error("Order Error:", err);
     res.status(500).json({ msg: "Order creation failed" });

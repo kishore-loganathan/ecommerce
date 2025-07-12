@@ -1,3 +1,4 @@
+const Order = require("../models/Orders");
 exports.placeOrder = async (req, res) => {
   try {
     const { items, totalAmount } = req.body;
@@ -23,5 +24,17 @@ exports.placeOrder = async (req, res) => {
   } catch (err) {
     console.error("Error placing order:", err);
     res.status(500).json({ msg: "Server error", error: err.message });
+  }
+};
+exports.getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user.id }).populate(
+      "items.productId",
+      "name price image"
+    );
+    res.json(orders);
+  } catch (err) {
+    console.error("Failed to fetch orders", err);
+    res.status(500).json({ msg: "Server Error" });
   }
 };

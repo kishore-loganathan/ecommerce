@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../models/Orders");
 const protect = require("../middleware/authMiddleware");
-
+const {getOrders } = require("../controllers/orderController");
 router.post("/", protect, async (req, res) => {
   const { items, totalAmount } = req.body;
 
@@ -24,5 +24,5 @@ router.post("/", protect, async (req, res) => {
     res.status(500).json({ msg: "Order creation failed" });
   }
 });
-
+router.get("/", protect, getOrders);
 module.exports = router;
